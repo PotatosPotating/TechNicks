@@ -1,0 +1,15 @@
+
+{% extends 'Blogs/base.html' %}
+{% block content %}
+<div class="jumbotron">
+        <h1>Welcome to Tech Nicks</h1>
+</div>
+{% if user.is_authenticated %}
+<h3>Welcome {{user.username}}.</h3>
+<p>Thank you for logging in.</p>
+{% else %}
+    <p>To login please click <a href="{% url 'accounts:login' %}">here!</a>. </p>
+    <p>To register please click <a href="{% url 'accounts:register' %}">here!</a>. </p>
+    <p>To view Blog Posts click on any of the posts on the left.</p>
+{% endif %}
+{% endblock %}

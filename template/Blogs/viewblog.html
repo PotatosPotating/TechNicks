@@ -1,0 +1,39 @@
+
+{% extends 'Blogs/base.html' %}
+
+{% block title %}{{ blog.title }}{% endblock %}
+
+{% block content %}
+{% csrf_token %}
+<div class="jumbotron"> <h1>{{ blog.title }}</h1>
+  <h2>Author: {{ blog.author }}</h2>
+    <h6>Date: {{blog.date}}</h6>
+</div>
+  <p>{{ blog.contentText }}</p>
+{% if user.is_authenticated %}
+    {% ifequal user.username blog.author %}
+    {% csrf_token %}
+<form method="post" action="{% url 'blogs:editblog' blog.title %}">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-dark">Edit Blog</button>
+</form>
+    {% endifequal %}
+{% endif %}
+{% if all_comments %}
+    {% for comment in all_comments %}
+        <hr>
+        <h4>{{comment.username}}</h4><h6>{{comment.date}}</h6>
+        <p>{{comment.comment}}</p>
+    {% endfor %}
+{% else %}
+    <hr>
+    <p>No Comments yet.</p>
+{% endif %}
+<hr>
+<form method="post">
+    {% csrf_token %}
+        {{form.as_p}}
+    <button type="submit" class="btn btn-dark">Add Comment</button>
+</form>
+{% endblock %}
+

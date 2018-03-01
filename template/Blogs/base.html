@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="{% url 'index' %}">Tech Nicks</a>
+    </div>
+    <ul class="nav navbar-nav">
+        <li class="active"><a href="{% url 'index' %}">Home</a></li>
+        {% if user.is_authenticated %}
+        <li><a href="{% url 'accounts:logout' %}">Logout</a></li>
+        <li><a href="{% url 'blogs:createblog' %}">Create Blog</a></li>
+        {% else %}
+        <li><a href="{% url 'accounts:login' %}">Login</a></li>
+        <li><a href="{% url 'accounts:register' %}">Register</a> </li>
+        {% endif %}
+    </ul>
+</nav>
+<style>
+    body { padding-top: 70px; }
+</style>
+<style type="text/css">
+    .container.custom-container {
+      padding: 0 0px;
+    }
+    .list-group{
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+ }
+</style>
+<div class="custom-container container-fluid">
+    <div class="row">
+        <div class="col-sm-2">
+            {% if all_blogs %}
+            <div class="list-group">
+                {% for blog in all_blogs %}
+                <a href="{% url 'blogs:viewBlog' blog.title %}" class="list-group-item d-flex list-group-item-action">{{ blog.title}}</a>
+                {% endfor %}
+            </div>
+            {% else %}
+            No Posts.
+            {% endif %}
+        </div>
+        <div class="col-sm-10">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
+</div>
+</body>
+</html>
